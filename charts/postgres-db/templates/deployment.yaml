@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.namespace | default "db-space" }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu}}
+          limits:
+            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+        env:
+        - name: POSTGRES_DB
+          value: {{ .Values.auth.database | quote }}
+        - name: POSTGRES_USER
+          value: {{ .Values.auth.username | quote }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-db-secret
+              key: postgres-password
+        ports:
+        - containerPort: 5432   
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "{{ .Values.auth.username }}"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "{{ .Values.auth.username }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        volumeMounts:
+        - name: postgres-data
+          mountPath: {{ .Values.persistence.mountPath }}
+        - name: init-scripts
+          mountPath: /docker-entrypoint-initdb.d/init.sql
+          subPath: init.sql
+        - name: config-file
+          mountPath: /etc/postgresql/postgresql.conf
+          subPath: postgresql.conf
+
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc
+      - name: init-scripts
+        configMap:
+          name: {{ .Release.Name }}-config
+      - name: config-file
+        configMap:
+          name: {{ .Release.Name }}-config

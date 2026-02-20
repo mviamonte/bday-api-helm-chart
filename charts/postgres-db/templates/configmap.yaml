@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  postgresql.conf: |
+    max_connections = {{ .Values.dbConfig.max_connections }}
+    shared_buffers = {{ .Values.dbConfig.shared_buffers }}
+    log_statement = {{ .Values.dbConfig.log_statement }}
+  init.sql: {{ index .Values.initScripts "create_tables.sql" | nindent 4 }}

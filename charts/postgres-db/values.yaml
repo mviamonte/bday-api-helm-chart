@@ -1,0 +1,42 @@
+namespace: db-space
+servicename: postgres-service
+image:
+  repository: postgres
+  tag: "15-alpine"
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits: 
+    memory: "512Mi"
+    cpu: "1000m"
+
+networkPolicy:
+  enabled: true
+  fromNamespace: "app-space"
+  allowedPodLabel: "hello-api"
+  dbPort: 5432
+
+auth:
+  database: "hello_db"
+  username: "postgres"
+  password: "password" 
+
+persistence:
+  size: 1Gi
+  accessMode: ReadWriteOnce
+  mountPath: /var/lib/postgresql/data
+
+dbConfig:
+  max_connections: "100"
+  shared_buffers: "128MB"
+  log_statement: "all"
+
+initScripts:
+  create_tables.sql: |
+    CREATE TABLE IF NOT EXISTS "user" (
+        username VARCHAR PRIMARY KEY,
+        date_of_birth DATE NOT NULL
+    );

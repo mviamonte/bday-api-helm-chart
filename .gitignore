@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+.venv/
+venv/
+ENV/
+
+# Kubernetes/Helm
+.pytest_cache/
+*.log
+.DS_Store
+
+# Secretos (¡Nunca los subas!)
+# Si tienes archivos .env o secrets.yaml locales, agrégalos aquí
+.env
