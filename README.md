@@ -50,19 +50,35 @@ This projects contains the files for the deployment of a API based on FastAPI an
 └── README.md               # Project documentation
 ```
 
-### 1. Start minikube cluster using calico for Network Policies
+#### 1. Start minikube cluster using calico for Network Policies
 
 `minikube start --cni=calico`
 
-### 2. Build the image and push it to minikube
+#### 2. Clone the git repo
+
+`git clone git@github.com:mviamonte/bday-api-helm-chart.git`
+
+#### 3. Build the image and push it to minikube
 
 `docker build -t hello-api:v1 .`
 `minikube image load hello-api:v1`
 
-### 3. Deploy infrastructure
+#### 4. Deploy infrastructure
 
 `helm upgrade --install db-release ./charts/postgres-db -n db-space`
 `helm upgrade --install api-release ./charts/hello-api -n app-space`
+
+#### 5. Create registers and examples of the application working
+
+`curl -X 'PUT' 'http://hello-world.local/hello/bilbo' -H 'Content-Type: application/json' -d '{"dateOfBirth": "2000-10-01"}'`  -- This is a valid entry
+
+`curl -X 'PUT' 'http://hello-world.local/hello/bilbo' -H 'Content-Type: application/json' -d '{"dateOfBirth": "2000-1-01"}'`  -- This is NOT a valid entry. Date format is not correct
+
+`curl -X 'PUT' 'http://hello-world.local/hello/bilbo1234' -H 'Content-Type: application/json' -d '{"dateOfBirth": "2000-1-01"}'`  -- This is NOT a valid entry. There is a pattern mismatch in the username
+
+`curl -i http://hello-world.local/hello/bilbo` -- This will show the days remaining for the birthday in N days
+
+`curl -i http://hello-world.local/hello/luciana`  -- 404 Not Found
 
 ## The solution
 
