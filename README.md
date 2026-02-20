@@ -1,13 +1,13 @@
 # Birthday API APP
 
-This projects contains the files for the deployment of a API based on FastAPI and relies on PostegreSQL. The deployment is based on helm chart and minikube.
+This projects contains the files for the deployment of a API based on FastAPI and relies on PostgreSQL. The deployment is based on helm chart and minikube.
 
 ## The requirement
 
 1. Code a simple application that exposes the following HTTP based APIs:
 
     **Description**: Save/updates a given user name and date of birth in a database.  
-    **Request**: PUT `/hello/<username>` `{ “dateOfBrith”: “YYYY-MM-DD” }`  
+    **Request**: PUT `/hello/<username>` `{ “dateOfBirth”: “YYYY-MM-DD” }`  
     **Response**: 204 No Content
 
     **Note**:
@@ -50,9 +50,11 @@ This projects contains the files for the deployment of a API based on FastAPI an
 └── README.md               # Project documentation
 ```
 
-#### 1. Start minikube cluster using calico for Network Policies
+#### 1. Start minikube cluster using calico and enabling NGINX ingress
 
-`minikube start --cni=calico`
+`minikube start --cpus 4 --memory 8192 --cni=calico`  
+
+`minikube addons enable ingress`
 
 #### 2. Clone the git repo
 
@@ -60,7 +62,7 @@ This projects contains the files for the deployment of a API based on FastAPI an
 
 #### 3. Build the image and push it to minikube
 
-`docker build -t hello-api:v1 .`
+`docker build -t hello-api:v1 .`  
 `minikube image load hello-api:v1`
 
 #### 4. Deploy infrastructure
@@ -68,7 +70,11 @@ This projects contains the files for the deployment of a API based on FastAPI an
 `helm upgrade --install db-release ./charts/postgres-db -n db-space`
 `helm upgrade --install api-release ./charts/hello-api -n app-space`
 
-#### 5. Create registers and examples of the application working
+#### 5. /etc/hosts for local connectivity
+
+`echo "$(minikube ip) hello-world.local" | sudo tee -a /etc/hosts`
+
+#### 6. Create registers and examples of the application working
 
 `curl -X 'PUT' 'http://hello-world.local/hello/bilbo' -H 'Content-Type: application/json' -d '{"dateOfBirth": "2000-10-01"}'`  -- This is a valid entry
 
@@ -95,7 +101,7 @@ This projects contains the files for the deployment of a API based on FastAPI an
 
 - Uses PostgreSQL to store the data
 - Data validation:
-  - Using `SQLModel`, to ensure data consistency and validation based on the initial requirement.
+  - Using `SQLModel`, to ensure data consistency, validation and persistency.
 
 ### 2 - Create Helm charts
 
@@ -132,6 +138,12 @@ To migrate this solution to a cloud environment in AWS:
 - Request per seconds
 - 400 errors where the users is not found
 - Data validation errors for string formats (user and date format)
+
+**CI/CD:** Add a pipeline on a CI/CD tool like Github actions for:
+
+- Code linting (error prevention) and code consistency
+- Secret scanning
+- Libraries dependencies
 
 **Security & Secrets:**
 
