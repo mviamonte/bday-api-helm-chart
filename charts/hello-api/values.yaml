@@ -1,5 +1,6 @@
 replicaCount: 2
 namespace: app-space
+applicationName: hello-api
 image:
   repository: hello-api
   tag: v1
@@ -22,3 +23,17 @@ database:
 ingress:
   enabled: true
   host: hello-world.local
+
+connectivity:
+  rootPath: "/"
+  applicationPort: "8000"
+
+probesIntervalsSeconds:
+  readiness:
+    initialDelay: "5"
+    period: "5"
+
+  liveness:  
+    initialDelay: "10"
+    period: "10"
+

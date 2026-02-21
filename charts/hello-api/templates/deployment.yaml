@@ -7,26 +7,26 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: hello-api
+      app: {{ .Values.applicationName }}
   template:
     metadata:
       labels:
-        app: hello-api
+        app: {{ .Values.applicationName }}
     spec:
       containers:
-      - name: hello-api
+      - name: {{ .Values.applicationName }}
         livenessProbe:
           httpGet:
-            path: /
-            port: 8000
-          initialDelaySeconds: 10 
-          periodSeconds: 10 
+            path: {{ .Values.connectivity.rootPath }}
+            port: {{ .Values.connectivity.applicationPort }}
+          initialDelaySeconds: {{ .Values.probesIntervalsSeconds.liveness.initialDelay }} 
+          periodSeconds: {{ .Values.probesIntervalsSeconds.liveness.period }} 
         readinessProbe:
           httpGet:
-            path: /
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+            path: {{ .Values.connectivity.rootPath }}
+            port: {{ .Values.connectivity.applicationPort }}
+          initialDelaySeconds: {{ .Values.probesIntervalsSeconds.readiness.initialDelay }}
+          periodSeconds: {{ .Values.probesIntervalsSeconds.readiness.period }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
@@ -37,7 +37,7 @@ spec:
             memory: {{ .Values.resources.limits.memory }}
             cpu: {{ .Values.resources.limits.cpu }}
         ports:
-        - containerPort: 8000
+        - containerPort: {{ .Values.connectivity.applicationPort }}
         env:
         - name: DB_HOST
           value: {{ .Values.database.host | quote }}
