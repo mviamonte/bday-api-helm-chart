@@ -23,6 +23,8 @@ database:
 ingress:
   enabled: true
   host: hello-world.local
+  path: "/"
+  port: "80"
 
 connectivity:
   rootPath: "/"
