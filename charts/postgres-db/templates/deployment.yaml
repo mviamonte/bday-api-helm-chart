@@ -35,7 +35,7 @@ spec:
               name: {{ .Release.Name }}-db-secret
               key: postgres-password
         ports:
-        - containerPort: {{ .Values.connectivity.databasePort }}   
+        - containerPort: {{ .Values.networkPolicy.dbPort }}   
         livenessProbe:
           exec:
             command: ["pg_isready", "-U", "{{ .Values.auth.username }}"]

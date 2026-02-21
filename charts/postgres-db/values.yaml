@@ -23,9 +23,6 @@ probesIntervalsSeconds:
     initialDelay: "30"
     period: "10"
 
-connectivity:
-  databasePort: "5432"
-
 networkPolicy:
   enabled: true
   fromNamespace: "app-space"
