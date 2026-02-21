@@ -120,6 +120,8 @@ The helms charts featured:
 
 #### AWS Diagram
 
+![Architecture diagram](diagrams/arquitecture_diagram.png)
+
 To migrate this solution to a cloud environment in AWS, along with account  bootstraping:
 
 - Organizations
