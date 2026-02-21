@@ -6,8 +6,8 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: hello-api
+    app: {{ .Values.applicationName }}
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8000 
+      port: {{ .Values.ingress.port }}
+      targetPort: {{ .Values.connectivity.applicationPort }}

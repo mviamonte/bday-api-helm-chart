@@ -1,7 +1,6 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  # El nombre del objeto HPA en sí mismo
   name: {{ .Release.Name }}-hpa 
   namespace: {{ .Values.namespace | default "app-space" }}
 spec:
@@ -9,12 +8,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Release.Name }} 
-  minReplicas: 2
-  maxReplicas: 10
+  minReplicas: {{ .Values.hpa.replicas.minRep }}
+  maxReplicas: {{ .Values.hpa.replicas.maxRep }}
   metrics:
   - type: Resource
     resource:
-      name: cpu
+      name: {{ .Values.hpa.resource.name }}
       target:
-        type: Utilization
-        averageUtilization: 50 # CPU %
+        type: {{ .Values.hpa.resource.type }}
+        averageUtilization: {{ .Values.hpa.resource.use }}

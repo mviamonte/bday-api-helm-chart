@@ -7,14 +7,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: {{ .Values.applicationName }}
   template:
     metadata:
       labels:
-        app: postgres
+        app: {{ .Values.applicationName }}
     spec:
       containers:
-      - name: postgres
+      - name: {{ .Values.applicationName }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
@@ -35,17 +35,17 @@ spec:
               name: {{ .Release.Name }}-db-secret
               key: postgres-password
         ports:
-        - containerPort: 5432   
+        - containerPort: {{ .Values.networkPolicy.dbPort }}   
         livenessProbe:
           exec:
             command: ["pg_isready", "-U", "{{ .Values.auth.username }}"]
-          initialDelaySeconds: 30
-          periodSeconds: 10
+          initialDelaySeconds: {{ .Values.probesIntervalsSeconds.liveness.initialDelay }}
+          periodSeconds: {{ .Values.probesIntervalsSeconds.liveness.period }}
         readinessProbe:
           exec:
             command: ["pg_isready", "-U", "{{ .Values.auth.username }}"]
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: {{ .Values.probesIntervalsSeconds.readiness.initialDelay }}
+          periodSeconds: {{ .Values.probesIntervalsSeconds.readiness.period }}
         volumeMounts:
         - name: postgres-data
           mountPath: {{ .Values.persistence.mountPath }}

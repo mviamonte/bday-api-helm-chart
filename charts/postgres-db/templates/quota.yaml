@@ -5,10 +5,10 @@ metadata:
   namespace: {{ .Values.namespace | default "db-space" }}
 spec:
   hard:
-    requests.cpu: "1500m"      
-    requests.memory: "2Gi"    
-    limits.cpu: "2"           
-    limits.memory: "3Gi"      
-    pods: "3"
-    persistentvolumeclaims: "2"
-    requests.storage: "5Gi"
+    requests.cpu: {{ .Values.quota.hard.cpu.requests }}     
+    requests.memory: {{ .Values.quota.hard.memory.requests }}    
+    limits.cpu: {{ .Values.quota.hard.cpu.limits }}           
+    limits.memory: {{ .Values.quota.hard.memory.limits }}      
+    pods: {{ .Values.quota.hard.pods }}
+    persistentvolumeclaims: {{ .Values.quota.hard.volumes.claims }}
+    requests.storage: {{ .Values.quota.hard.volumes.storage }}
