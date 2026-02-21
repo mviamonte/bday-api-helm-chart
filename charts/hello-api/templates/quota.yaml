@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: app-space-quota
+  name: {{ .Release.Name }}-quota
   namespace: {{ .Values.namespace | default "app-space" }}
 spec:
   hard:
-    requests.cpu: "1"
-    requests.memory: "1Gi"
-    limits.cpu: "2" 
-    limits.memory: "2Gi"     
-    pods: "10"               
+    requests.cpu: {{ .Values.quota.hard.cpu.requests }}
+    requests.memory: {{ .Values.quota.hard.memory.requests }}
+    limits.cpu: {{ .Values.quota.hard.cpu.limits }} 
+    limits.memory: {{ .Values.quota.hard.memory.limits }}    
+    pods: {{ .Values.quota.hard.pods }}               

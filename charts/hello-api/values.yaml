@@ -47,3 +47,13 @@ hpa:
     name: "cpu"
     type: "Utilization"
     use: "50"
+
+quota:
+  hard:
+    cpu:
+      requests: "1"
+      limits: "2"
+    memory:
+      requests: "1Gi"
+      limits: "2Gi"     
+    pods: "10"  
