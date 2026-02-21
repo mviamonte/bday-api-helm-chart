@@ -23,6 +23,19 @@ probesIntervalsSeconds:
     initialDelay: "30"
     period: "10"
 
+quota:
+  hard:
+    cpu:
+      requests: "1500m"
+      limits: "2"
+    memory:
+      requests: "2Gi"
+      limits: "3Gi"     
+    pods: "3"
+    volumes:
+      claims: "2"
+      storage: "5Gi"
+    
 networkPolicy:
   enabled: true
   fromNamespace: "app-space"
