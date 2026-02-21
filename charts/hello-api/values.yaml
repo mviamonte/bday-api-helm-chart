@@ -37,3 +37,11 @@ probesIntervalsSeconds:
     initialDelay: "10"
     period: "10"
 
+hpa:
+  replicas:
+    minRep: "2"
+    maxRep: "10"
+  resource:
+    name: "cpu"
+    type: "Utilization"
+    use: "50"
