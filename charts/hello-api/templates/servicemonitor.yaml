@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    release: {{ .Values.monitoring.prometheusRelease | default "prometheus-stack" }} 
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.namespace | default "app-space" }}
+  selector:
+    matchLabels:
+      app: {{ .Values.applicationName }}
+  endpoints:
+  - port: {{ .Values.monitoring.port }}
+    path: {{ .Values.monitoring.path }}
+    interval: {{ .Values.monitoring.interval }}
