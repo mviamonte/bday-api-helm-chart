@@ -11,6 +11,7 @@ ENV/
 *.log
 .DS_Store
 
-# Secretos (¡Nunca los subas!)
-# Si tienes archivos .env o secrets.yaml locales, agrégalos aquí
+# secrets
+**/*secret*.yaml
+# .env folders
 .env

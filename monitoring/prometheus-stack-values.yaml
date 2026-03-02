@@ -1,0 +1,48 @@
+# 1. GRAFANA
+grafana:
+  enabled: true
+  admin:
+    existingSecret: "grafana-admin-credentials"
+    userKey: admin-user
+    passwordKey: admin-password
+  
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.minikube.local
+
+  persistence:
+    enabled: true
+    size: 2Gi
+
+# 2. PROMETHEUS
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    resources:
+      requests:
+        memory: "400Mi"
+        cpu: "200m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+    retention: 7d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+
+ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.minikube.local
+
+# 3. ALERTMANAGER
+alertmanager:
+  enabled: false
