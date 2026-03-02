@@ -33,7 +33,7 @@ prometheus:
             requests:
               storage: 2Gi
 
-ingress:
+  ingress:
     enabled: true
     ingressClassName: nginx
     hosts:
