@@ -35,7 +35,7 @@ jobs:
     needs: python-validation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del código
+      - name: Code checkout
         uses: actions/checkout@v4
       - name: Install helm Helm
         uses: azure/setup-helm@v4
@@ -43,5 +43,4 @@ jobs:
           version: 'v3.12.0'
       - name: Lint Charts
         run:
-          helm lint ./charts/hello-api
-          helm lint ./charts/postgres-db
+          helm lint ./charts/hello-api ./charts/postgres-db
