@@ -3,6 +3,8 @@ name: CI Python & Helm Validation
 on:
   pull_request:
     branches: [ master ]
+  
+  workflow_dispatch:
 
 jobs:
   # Python lint job
@@ -37,10 +39,16 @@ jobs:
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
-      - name: Install helm Helm
+
+      - name: Installing helm
         uses: azure/setup-helm@v4
         with:
           version: 'v3.12.0'
-      - name: Lint Charts
+          
+      - name: API Lint
         run:
-          helm lint ./charts/hello-api ./charts/postgres-db
+          helm lint ./charts/hello-api
+      - name: Database lint
+        run:
+          helm lint ./charts/postgres-db
+      
