@@ -25,11 +25,6 @@ jobs:
       - name: checking format with black
         run: black .
 
-      - name: Auto-commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "style: auto-format with black"
-
       - name: Static verification with Flake8
         run: |
           # Build will stop if it founds errors or variable unused

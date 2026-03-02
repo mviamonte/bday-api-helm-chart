@@ -2,9 +2,11 @@ from sqlmodel import SQLModel, Field
 from pydantic import BaseModel, field_validator
 from datetime import date
 
+
 class User(SQLModel, table=True):
     username: str = Field(primary_key=True)
     date_of_birth: date
+
 
 class UserInput(BaseModel):
     dateOfBirth: date
