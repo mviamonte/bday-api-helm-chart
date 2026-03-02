@@ -1,9 +1,6 @@
 # 1. GRAFANA
 grafana:
   enabled: true
-  admin:
-    userKey: admin-user
-    passwordKey: admin-password
   
   ingress:
     enabled: true
