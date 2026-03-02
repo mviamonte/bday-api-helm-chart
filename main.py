@@ -4,8 +4,11 @@ from datetime import date
 from sqlmodel import Session
 from models import User, UserInput
 from database import get_session
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/")
 async def root():

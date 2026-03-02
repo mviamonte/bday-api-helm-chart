@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-service 
+  labels:
+    app: {{ .Values.applicationName }}
   namespace: app-space
 spec:
   type: ClusterIP
@@ -9,5 +11,6 @@ spec:
     app: {{ .Values.applicationName }}
   ports:
     - protocol: TCP
+      name:  {{ .Values.ingress.name }}
       port: {{ .Values.ingress.port }}
       targetPort: {{ .Values.connectivity.applicationPort }}
