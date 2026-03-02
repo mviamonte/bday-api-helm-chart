@@ -1,6 +1,13 @@
 # 1. GRAFANA
 grafana:
   enabled: true
+  initChownData:
+    enabled: false # Desactivamos el contenedor que falla
+  
+  podSecurityContext:
+    fsGroup: 472
+    runAsGroup: 472
+    runAsUser: 472
   
   ingress:
     enabled: true
