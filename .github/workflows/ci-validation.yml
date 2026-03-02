@@ -1,8 +1,6 @@
 name: CI Python & Helm Validation
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
