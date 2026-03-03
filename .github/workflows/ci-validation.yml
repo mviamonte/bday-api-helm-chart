@@ -68,5 +68,5 @@ jobs:
           directory: charts/
           framework: helm
           quiet: true
-          soft_tail: true
+          soft_fail: true
       
